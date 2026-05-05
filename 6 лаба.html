@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Задачи JS</title>
+    <style>
+        body {
+            background: #ffe4e6;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #db2777;
+            text-align: center;
+            font-size: 24px;
+        }
+        
+        .task {
+            background: #fbcfe8;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #f472b6;
+        }
+        
+        h2 {
+            color: #be185d;
+            font-size: 18px;
+            margin-top: 0;
+        }
+        
+        h3 {
+            color: #db2777;
+            font-size: 14px;
+            margin: 10px 0 5px;
+        }
+        
+        input {
+            width: 90%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #f472b6;
+            border-radius: 5px;
+            background: #fff0f3;
+        }
+        
+        button {
+            background: #ec4899;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px 5px 0 0;
+        }
+        
+        button:hover {
+            background: #be185d;
+        }
+        
+        .result {
+            background: #fff0f3;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 13px;
+            border: 1px solid #f472b6;
+            color: #831843;
+        }
+        
+        .small {
+            font-size: 11px;
+            color: #be185d;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌸 Задачи JavaScript</h1>
+        
+        <!-- Задача 1 -->
+        <div class="task">
+            <h2>📝 Задача 1</h2>
+            
+            <h3>Максимальная разница</h3>
+            <input type="text" id="a1" value="5,2,9,1,7">
+            <button onclick="diff()">Найти</button>
+            <div id="r1" class="result"></div>
+            
+            <h3>Удалить дубликаты</h3>
+            <input type="text" id="a2" value="1,2,2,3,3,4">
+            <button onclick="unique()">Удалить</button>
+            <div id="r2" class="result"></div>
+            
+            <h3>Фильтр isDone</h3>
+            <button onclick="filterDone()">Фильтр</button>
+            <div id="r3" class="result"></div>
+        </div>
+        
+        <!-- Задача 2 -->
+        <div class="task">
+            <h2>🔧 Задача 2</h2>
+            
+            <h3>Числа больше порога</h3>
+            <input type="text" id="b1" value="1,4,6,3,2">
+            <input type="number" id="porog" value="2">
+            <button onclick="greater()">Найти</button>
+            <div id="r4" class="result"></div>
+            
+            <h3>Сделать плоским</h3>
+            <input type="text" id="b2" value="1,4,[34,1,20],[6,[6,12,8],6]">
+            <button onclick="flatten()">Развернуть</button>
+            <div id="r5" class="result"></div>
+            <div class="small">Пример: 1,4,[34,1,20],[6,[6,12,8],6]</div>
+        </div>
+        
+        <!-- Задача 3 -->
+        <div class="task">
+            <h2>✨ Задача 3</h2>
+            
+            <h3>Пары с суммой 0</h3>
+            <input type="text" id="c1" value="-7,12,4,6,-4,-12,0">
+            <button onclick="pairs()">Найти пары</button>
+            <div id="r6" class="result"></div>
+            
+            <h3>Тройки с суммой 0</h3>
+            <input type="text" id="c2" value="-1,2,4,7,-4,1,-2">
+            <button onclick="triplets()">Найти тройки</button>
+            <div id="r7" class="result"></div>
+        </div>
+    </div>
+    
+    <script>
+        // Задача 1
+        function diff() {//берем число из поле ввода и превращаем в массив
+            let arr = document.getElementById('a1').value.split(',').map(Number);
+            let min = Math.min(...arr);//находим минимум и максимум
+            let max = Math.max(...arr);
+            document.getElementById('r1').innerHTML = `Разница: ${max - min} (${max} - ${min})`;//выводим разницу
+        }
+        
+        function unique() {//берем числа из поле ввода
+            let arr = document.getElementById('a2').value.split(',').map(Number);
+            let uniq = [...new Set(arr)];//удаляет дубликаты, кооторые превращают обрытно в массив
+            document.getElementById('r2').innerHTML = `Без дубликатов: [${uniq}]`;//Выводим результат
+        }
+        
+        function filterDone() {
+            let items = [//масссив обьектов
+                {id: 1, isDone: true},
+                {id: 2, isDone: false},
+                {id: 3, isDone: true}
+            ];
+            let filtered = items.filter(x => x.isDone === true);//оставляет только то где isDone правда)
+            document.getElementById('r3').innerHTML = `Результат: ${JSON.stringify(filtered)}`; // 3. Выводим результат в JSON формате
+        }
+        
+        // Задача 2
+        function greater() {
+            let arr = document.getElementById('b1').value.split(',').map(Number);// 1. Берём массив чисел [1,4,6,3,2]
+            let porog = Number(document.getElementById('porog').value);  // 2. Берём порог 2
+            let res = arr.filter(x => x > porog);// 3. Оставляем только числа больше 2 → [4,6,3]
+            document.getElementById('r4').innerHTML = `Числа > ${porog}: [${res}]`;// 4. Выводим результат
+        }
+        
+        function flatten() {
+            // 1. Берём строку "1,4,[34,1,20],[6,[6,12,8],6]"
+            let input = document.getElementById('b2').value;    // 2. Превращаем в настоящий массив
+            // 3. Рекурсивно разворачиваем
+            try {
+                let arr = eval('[' + input + ']');
+                function flat(a) {
+                    let res = [];
+                    for(let x of a) {
+                        if(Array.isArray(x)) res.push(...flat(x));
+                        else res.push(x);// если массив - разворачиваем
+                    }
+                    return res;// если число - добавляем
+                }
+                let res = flat(arr);  // 4. Получаем плоский массив
+                document.getElementById('r5').innerHTML = `Плоский: [${res}]`;
+            } catch(e) { // 5. Выводим
+                document.getElementById('r5').innerHTML = `Ошибка! Пишите как в примере`;
+            }
+        }
+        
+        // Задача 3
+        function pairs() {
+            let arr = document.getElementById('c1').value.split(',').map(Number);
+            let count = 0;// счётчик пар
+            let used = new Array(arr.length).fill(false); // 2. Массив для отслеживания использованных чисел
+            
+            for(let i = 0; i < arr.length; i++) {
+                if(used[i]) continue;// уже использовано - пропускаем
+                for(let j = i+1; j < arr.length; j++) {
+                    if(used[j]) continue;
+                    if(arr[i] + arr[j] === 0) {
+                        count++;
+                        used[i] = used[j] = true;
+                        break;
+                    }
+                }
+            }
+            document.getElementById('r6').innerHTML = `Пар с суммой 0: ${count}`;
+        }
+        
+        function triplets() {
+            let arr = document.getElementById('c2').value.split(',').map(Number);
+            let count = 0;
+            let used = new Array(arr.length).fill(false);// 2. Массив для отслеживания использованных чисел
+             // 3. Ищем тройки (3 вложенных цикла)
+            for(let i = 0; i < arr.length-2; i++) {
+                if(used[i]) continue;
+                for(let j = i+1; j < arr.length-1; j++) {
+                    if(used[j]) continue;
+                    for(let k = j+1; k < arr.length; k++) {
+                        if(used[k]) continue;
+                        if(arr[i] + arr[j] + arr[k] === 0) {
+                            count++;
+                            used[i] = used[j] = used[k] = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            document.getElementById('r7').innerHTML = `Троек с суммой 0: ${count}`;
+        }
+    </script>
+</body>
+</html>

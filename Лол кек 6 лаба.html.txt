@@ -1,0 +1,148 @@
+import java.util.*;
+
+public class Main {
+    
+    // ========== ЗАДАЧА 1 ==========
+    
+    // 1. Максимальная разница
+    public static int maxDifference(int[] arr) {
+        if (arr == null || arr.length < 2) return 0;
+        int min = arr[0];
+        int max = arr[0];
+        for (int num : arr) {
+            if (num < min) min = num;
+            if (num > max) max = num;
+        }
+        return max - min;
+    }
+    
+    // 2. Удалить дубликаты
+    public static int[] removeDuplicates(int[] arr) {
+        Set<Integer> set = new LinkedHashSet<>();
+        for (int num : arr) {
+            set.add(num);
+        }
+        int[] result = new int[set.size()];
+        int i = 0;
+        for (int num : set) {
+            result[i++] = num;
+        }
+        return result;
+    }
+    
+    // 3. Фильтр isDone: true
+    static class Item {
+        int id;
+        boolean isDone;
+        
+        Item(int id, boolean isDone) {
+            this.id = id;
+            this.isDone = isDone;
+        }
+        
+        @Override
+        public String toString() {
+            return "{id=" + id + ", isDone=" + isDone + "}";
+        }
+    }
+    
+    public static List<Item> filterDone(List<Item> items) {
+        List<Item> result = new ArrayList<>();
+        for (Item item : items) {
+            if (item.isDone) {
+                result.add(item);
+            }
+        }
+        return result;
+    }
+    
+    // ========== ЗАДАЧА 2 ==========
+    
+    // 1. Числа больше порога
+    public static List<Integer> filterGreaterThan(int[] arr, int threshold) {
+        List<Integer> result = new ArrayList<>();
+        for (int num : arr) {
+            if (num > threshold) {
+                result.add(num);
+            }
+        }
+        return result;
+    }
+    
+    // 2. Сделать плоским
+    public static List<Integer> flattenArray(List<Object> arr) {
+        List<Integer> result = new ArrayList<>();
+        for (Object item : arr) {
+            if (item instanceof List) {
+                result.addAll(flattenArray((List<Object>) item));
+            } else if (item instanceof Integer) {
+                result.add((Integer) item);
+            }
+        }
+        return result;
+    }
+    
+    // ========== ЗАДАЧА 3 ==========
+    
+    // 1. Пары с суммой 0
+    public static int countZeroSumPairs(int[] arr) {
+        int count = 0;
+        boolean[] used = new boolean[arr.length];
+        
+        for (int i = 0; i < arr.length; i++) {
+            if (used[i]) continue;
+            for (int j = i + 1; j < arr.length; j++) {
+                if (used[j]) continue;
+                if (arr[i] + arr[j] == 0) {
+                    count++;
+                    used[i] = used[j] = true;
+                    break;
+                }
+            }
+        }
+        return count;
+    }
+    
+    // 2. Тройки с суммой 0
+    public static int countZeroSumTriplets(int[] arr) {
+        int count = 0;
+        boolean[] used = new boolean[arr.length];
+        
+        for (int i = 0; i < arr.length - 2; i++) {
+            if (used[i]) continue;
+            for (int j = i + 1; j < arr.length - 1; j++) {
+                if (used[j]) continue;
+                for (int k = j + 1; k < arr.length; k++) {
+                    if (used[k]) continue;
+                    if (arr[i] + arr[j] + arr[k] == 0) {
+                        count++;
+                        used[i] = used[j] = used[k] = true;
+                        break;
+                    }
+                }
+            }
+        }
+        return count;
+    }
+    
+    // ========== ТЕСТЫ ==========
+    public static void main(String[] args) {
+        System.out.println("=== ЗАДАЧА 1 ===");
+        System.out.println("Максимальная разница [5,2,9,1,7]: " + maxDifference(new int[]{5, 2, 9, 1, 7}));
+        System.out.println("Без дубликатов [1,2,2,3,3,4]: " + Arrays.toString(removeDuplicates(new int[]{1, 2, 2, 3, 3, 4})));
+        
+        List<Item> items = Arrays.asList(new Item(1, true), new Item(2, false), new Item(3, true));
+        System.out.println("Фильтр isDone: " + filterDone(items));
+        
+        System.out.println("\n=== ЗАДАЧА 2 ===");
+        System.out.println("Числа > 2 из [1,4,6,3,2]: " + filterGreaterThan(new int[]{1, 4, 6, 3, 2}, 2));
+        
+        List<Object> nested = Arrays.asList(1, 4, Arrays.asList(34, 1, 20), Arrays.asList(6, Arrays.asList(6, 12, 8), 6));
+        System.out.println("Плоский массив: " + flattenArray(nested));
+        
+        System.out.println("\n=== ЗАДАЧА 3 ===");
+        System.out.println("Пары с суммой 0 [-7,12,4,6,-4,-12,0]: " + countZeroSumPairs(new int[]{-7, 12, 4, 6, -4, -12, 0}));
+        System.out.println("Пары с суммой 0 [-1,2,4,7,-4,1,-2]: " + countZeroSumPairs(new int[]{-1, 2, 4, 7, -4, 1, -2}));
+        System.out.println("Тройки с суммой 0 [-1,2,4,7,-4,1,-2]: " + countZeroSumTriplets(new int[]{-1, 2, 4, 7, -4, 1, -2}));
+    }
+}
